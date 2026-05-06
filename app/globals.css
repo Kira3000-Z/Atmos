@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0f101a;
+  --foreground: #ffffff;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  /* Ensures no scrollbars on the main dashboard container */
+  overflow: hidden; 
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/5 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-xl transition-all duration-500;
+  }
+  
+  .no-scrollbar::-webkit-scrollbar { 
+    display: none; 
+  }
+  
+  .no-scrollbar { 
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+  }
+}
+
+@layer utilities {
+  /* Main HUD Scanline */
+  .scanline {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.03) 50%, transparent 100%);
+    background-size: 100% 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: main-scan 12s linear infinite;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.2;
+  }
+
+  /* AirComposition Widget Scanner */
+  .animate-scan {
+    animation: widget-scan 3s linear infinite;
+  }
+
+  /* Smooth gradient movement for the Weather Orb */
+  .orb-float {
+    filter: blur(120px);
+    mix-blend-mode: plus-lighter;
+    animation: float 20s ease-in-out infinite;
+  }
+
+  @keyframes main-scan {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(100%); }
+  }
+
+  @keyframes widget-scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(200%); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -50px); }
+  }
+}
+
+/* Custom Recharts Overrides for Atmos Style */
+.recharts-cartesian-axis-tick-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  @apply fill-white/60 font-bold;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  @apply stroke-white/5;
+}
